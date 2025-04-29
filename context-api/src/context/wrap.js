@@ -1,3 +1,1 @@
-export { TodoProvider,TodosContext,UseTodo } from "./context";
-
-
+export {useTodo,TodoProvider,TodoContext} from './context'

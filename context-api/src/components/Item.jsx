@@ -1,11 +1,24 @@
 import React from 'react'
-import { UseTodo } from '../context/context'
+import { useTodo } from '../context/context'
 
-function Item() {
-    const {namee}=UseTodo()
+function Item({todo}) {
+   
+  const {deleteTodo} =useTodo()
+  console.log(todo.todo)
 
+  const delett=()=>{
+      deleteTodo(todo.id);
+  }
   return (
-    <div><h2>{namee}</h2></div>
+    <>
+    <div style={{width:'300px', height:'60px',backgroundColor:'yellow'}}>
+      <h2>{todo.todo}</h2>
+    </div>
+    <div>
+      <h4>Delete ?</h4>
+      <button onClick={delett}>Delete</button>
+    </div>
+    </>
   )
 }
 

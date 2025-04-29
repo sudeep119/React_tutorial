@@ -1,35 +1,54 @@
-import { useEffect, useState } from 'react'
-import './App.css'
-import Item from './components/Item'
-import { TodoProvider } from './context/context'
+import { useEffect, useState } from "react"
+import Form from "./components/Form";
+import { TodoContext,TodoProvider,useTodo } from "./context/context";
+import Item from "./components/Item";
+
 
 function App() {
-    const [todos,setTudos]=useState([])
-    const[msg,setMsg]=useState("Heyy")
 
-    const formSubmit=(e)=>{
-        e.preventDefault();
-        setTudos((prev)=>[...prev,{id:Date.now(),msg:msg}])
-       
+    const [todos,setTodos]=useState([])
+
+    const addTodo=(todo)=>{
+      setTodos((prev)=>[...prev,{id:Date.now(),...todo}]);
+    }
+
+    const updateTodo=(id,todo)=>{
+      setTodos((prev)=>prev.map((obj)=>obj.id===id?todo:prev))
+    }
+
+    const deleteTodo=(id)=>{
+      setTodos((prev)=>prev.filter((obj)=>obj.id!==id))
+    }
+
+    const toggleComplete=(id)=>{
+      setTodos((prev)=>prev.map((obj)=>obj.id===id?{...obj,toggle:!obj.toggle}:obj))
     }
 
     useEffect(()=>{
-      console.log(todos)
-    },[todos])
-    
+      const todos=JSON.parse(localStorage.getItem("todos"))
 
+      if(todos && todos.length>0)
+        setTodos(todos)
+    },[])
+
+    useEffect(()=>{
+        localStorage.setItem("todos",JSON.stringify(todos))
+    },[todos])
+
+    console.log(todos.length)
   return (
-    <TodoProvider value={{todos}}> //,addTodo,updateTodo,deleteTodo,completeToggle
+    <TodoProvider value={{todos,addTodo,updateTodo,deleteTodo,toggleComplete}}>
       <div>
-          <h2>Hellooo</h2>
-          <Item/>
-          <div>
-            <form onSubmit={formSubmit}>
-            <h2>Add to do</h2>
-            <input type='text' placeholder='enter todo' onChange={(e)=>setMsg(e.target.value)}/>
-            <button type='submit'>Submit</button>
-            </form>
-          </div>
+        <h2>Hellooo</h2>
+        <Form/>
+        {
+          todos.map((todo)=>(
+            <div key={todo.id}>
+              <Item todo={todo}/>
+            </div>
+          ))
+    
+        }
       </div>
     </TodoProvider>
   )
