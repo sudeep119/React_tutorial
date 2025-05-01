@@ -1,15 +1,17 @@
-import { useState } from 'react'
-import './App.css'
+import Todo from './Components/Todo'
+import TodoAdd from './Components/todoAdd'
+import {Provider} from 'react-redux'
+import { store } from './Todoslices/store'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
+    <Provider store={store}>
       <div>
-          <h2 style={{textAlign:"center", backgroundColor:"black",color:"white", width:"80%",margin:"auto"}}>Helloo Guys</h2>
+      <TodoAdd/>
+      <Todo/>
       </div>
-    </>
+    </Provider>
   )
 }
 
