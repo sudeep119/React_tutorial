@@ -15,7 +15,7 @@ export const todoSlice=createSlice({
         addTodo:(state,action)=>{
             
             const todo={
-                id:Date.now(),
+                id:2,
                 naam:action.payload
             }
             state.todos.push(todo)
@@ -27,11 +27,15 @@ export const todoSlice=createSlice({
             })
         },
         updateTodo:(state,action)=>{
-            state.todos
+            const {id,newMsg}=action.payload
+            const todo=state.todos.find(todo=>todo.id===id)
+            if(todo){
+                todo.naam=newMsg;
+            }
         }
     }
 })
 
-export const {addTodo , removeTodo}= todoSlice.actions
+export const {addTodo , removeTodo,updateTodo}= todoSlice.actions
 
 export default todoSlice.reducer
